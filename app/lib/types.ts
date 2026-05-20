@@ -51,6 +51,8 @@ export interface GameState {
   questionIndex: number;
   /** 总答题数 */
   totalAnswered: number;
+  /** 当前连击数（连续答对次数） */
+  streak: number;
   /** 剩余血量 */
   lives: number;
   /** 左侧条目 */

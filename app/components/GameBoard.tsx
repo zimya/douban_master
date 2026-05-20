@@ -6,7 +6,7 @@ import { BucketedMovies } from "../lib/dataLoader";
 import { useGame } from "../hooks/useGame";
 import { PHASE_CONFIGS, PHASE_ORDER } from "../lib/constants";
 import { GamePhase } from "../lib/types";
-import { GameHeader } from "./GameHeader";
+import { GameHeader, GameStats } from "./GameHeader";
 import { MovieCard } from "./MovieCard";
 import { RoundFeedback } from "./RoundFeedback";
 import { PhaseTransition } from "./PhaseTransition";
@@ -85,7 +85,7 @@ export function GameBoard({ data }: GameBoardProps) {
   const isRevealed = gameState.roundResult !== null;
 
   return (
-    <div className="relative w-full min-h-[100dvh] flex flex-col bg-gray-950">
+    <div className="relative w-full min-h-[100dvh] flex flex-col bg-white">
       {/* 阶段过渡 */}
       <AnimatePresence>
         {showPhaseTransition && (
@@ -103,17 +103,20 @@ export function GameBoard({ data }: GameBoardProps) {
       <GameHeader gameState={gameState} />
 
       {/* 提示语 */}
-      <div className="text-center pt-2 pb-1 md:pt-4 md:pb-2">
-        <h2 className="text-base md:text-xl font-medium text-gray-300">
+      <div className="text-center pt-1 pb-0.5 md:pt-2 md:pb-1">
+        <h2 className="text-base md:text-xl font-medium text-gray-700">
           哪部影视的评分更高？
         </h2>
-        <p className="text-xs md:text-sm text-gray-500 mt-1">
+        <p className="text-xs md:text-sm text-gray-500 mt-0.5">
           点击你认为评分更高的那部
         </p>
       </div>
 
+      {/* 状态栏：连击、已答、血量 */}
+      <GameStats gameState={gameState} />
+
       {/* 卡片区域 */}
-      <div className="flex-1 flex flex-row items-center justify-center gap-4 md:gap-10 px-4 py-2 md:py-4">
+      <div className="flex-1 flex flex-row items-center justify-center gap-4 md:gap-10 px-4 py-1 md:py-2">
         {/* 左侧卡片 */}
         <div className="flex-1 flex items-center justify-center max-w-[200px] md:max-w-[280px]">
           <MovieCard
@@ -128,7 +131,7 @@ export function GameBoard({ data }: GameBoardProps) {
 
         {/* VS 分隔 */}
         <div className="flex-shrink-0 flex items-center justify-center">
-          <span className="text-gray-600 font-bold text-lg md:text-2xl">
+          <span className="text-gray-400 font-bold text-lg md:text-2xl">
             VS
           </span>
         </div>
@@ -180,18 +183,18 @@ function ProgressBar({
 
   return (
     <div className="w-full px-4 pb-3 md:pb-4">
-      <div className="w-full h-1.5 md:h-2 bg-gray-800 rounded-full overflow-hidden">
+      <div className="w-full h-1.5 md:h-2 bg-gray-200 rounded-full overflow-hidden">
         <div
-          className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full transition-all duration-500 ease-out"
+          className="h-full bg-gradient-to-r from-[#00b51d] to-[#00d422] rounded-full transition-all duration-500 ease-out"
           style={{ width: `${progress}%` }}
         />
       </div>
-      <div className="flex justify-between mt-1.5 md:mt-2 text-[10px] md:text-xs text-gray-600">
+      <div className="flex justify-between mt-1.5 md:mt-2 text-[10px] md:text-xs text-gray-400">
         {PHASE_ORDER.map((p, i) => (
           <span
             key={p}
             className={
-              i <= phaseIndex ? "text-indigo-400 font-medium" : "text-gray-600"
+              i <= phaseIndex ? "text-[#00b51d] font-medium" : "text-gray-400"
             }
           >
             {PHASE_CONFIGS[p].name}

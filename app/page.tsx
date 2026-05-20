@@ -26,14 +26,14 @@ export default function Home() {
 
   if (error) {
     return (
-      <div className="fixed inset-0 flex items-center justify-center bg-gray-950">
+      <div className="fixed inset-0 flex items-center justify-center bg-white">
         <div className="text-center px-8">
           <div className="text-4xl mb-4">😵</div>
-          <h2 className="text-xl text-white mb-2">加载失败</h2>
-          <p className="text-gray-400">{error}</p>
+          <h2 className="text-xl text-gray-800 mb-2">加载失败</h2>
+          <p className="text-gray-500">{error}</p>
           <button
             onClick={() => window.location.reload()}
-            className="mt-6 px-6 py-2 bg-indigo-600 text-white rounded-lg"
+            className="mt-6 px-6 py-2 bg-[#00b51d] text-white rounded-lg hover:bg-[#009a18]"
           >
             重试
           </button>

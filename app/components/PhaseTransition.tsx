@@ -29,7 +29,7 @@ export function PhaseTransition({ phase, onContinue }: PhaseTransitionProps) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-40 flex items-center justify-center bg-black/80 backdrop-blur-md"
+      className="fixed inset-0 z-40 flex items-center justify-center bg-white/90 backdrop-blur-md"
     >
       <motion.div
         initial={{ scale: 0.8, y: 20 }}
@@ -46,17 +46,17 @@ export function PhaseTransition({ phase, onContinue }: PhaseTransitionProps) {
           {phaseIcons[phase]}
         </motion.div>
 
-        <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3">
           {config.name}
         </h2>
 
-        <p className="text-gray-400 text-lg mb-2">
+        <p className="text-gray-500 text-lg mb-2">
           {config.infinite
             ? "无限挑战模式"
             : `共 ${config.questionCount} 题`}
         </p>
 
-        <p className="text-gray-500 text-sm mb-8">
+        <p className="text-gray-400 text-sm mb-8">
           评分差控制: ≥ {config.minRatingDiff}
         </p>
 
@@ -64,8 +64,8 @@ export function PhaseTransition({ phase, onContinue }: PhaseTransitionProps) {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={onContinue}
-          className="px-8 py-3 bg-gradient-to-r from-indigo-500 to-purple-600
-            text-white font-bold rounded-xl shadow-lg shadow-indigo-500/30
+          className="px-8 py-3 bg-[#00b51d] hover:bg-[#009a18]
+            text-white font-bold rounded-xl shadow-lg shadow-green-500/30
             transition-all duration-200"
         >
           开始挑战

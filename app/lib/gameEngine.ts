@@ -64,6 +64,7 @@ export function createInitialState(): GameState {
     phase: "novice",
     questionIndex: 0,
     totalAnswered: 0,
+    streak: 0,
     lives: INITIAL_LIVES,
     leftMovie: null,
     rightMovie: null,
@@ -147,6 +148,7 @@ export function judgeGuess(
   const newLives = isCorrect ? state.lives : state.lives - 1;
   const newTotalAnswered = state.totalAnswered + 1;
   const newQuestionIndex = state.questionIndex + 1;
+  const newStreak = isCorrect ? state.streak + 1 : 0;
 
   // 血量耗尽 → 游戏结束
   if (newLives <= 0) {
@@ -155,6 +157,7 @@ export function judgeGuess(
       lives: 0,
       totalAnswered: newTotalAnswered,
       questionIndex: newQuestionIndex,
+      streak: 0,
       isGameOver: true,
       roundResult: "wrong",
     };
@@ -165,6 +168,7 @@ export function judgeGuess(
     lives: newLives,
     totalAnswered: newTotalAnswered,
     questionIndex: newQuestionIndex,
+    streak: newStreak,
     roundResult: isCorrect ? "correct" : "wrong",
   };
 }

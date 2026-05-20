@@ -28,7 +28,7 @@ export function GameOver({ gameState, onRestart }: GameOverProps) {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-white/95 backdrop-blur-md"
     >
       <motion.div
         initial={{ scale: 0.8, y: 30 }}
@@ -47,17 +47,17 @@ export function GameOver({ gameState, onRestart }: GameOverProps) {
         </motion.div>
 
         {/* 标题 */}
-        <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
           {isVictory ? "恭喜通关！" : "游戏结束"}
         </h2>
 
         {/* 消息 */}
-        <p className="text-gray-300 text-lg mb-6 leading-relaxed">{message}</p>
+        <p className="text-gray-600 text-lg mb-6 leading-relaxed">{message}</p>
 
         {/* 统计 */}
         <div className="flex justify-center gap-6 mb-8">
           <div className="text-center">
-            <div className="text-2xl font-bold text-indigo-400">
+            <div className="text-2xl font-bold text-[#00b51d]">
               {gameState.totalAnswered}
             </div>
             <div className="text-sm text-gray-500">总答题数</div>
@@ -81,8 +81,8 @@ export function GameOver({ gameState, onRestart }: GameOverProps) {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={onRestart}
-          className="px-8 py-3 bg-gradient-to-r from-indigo-500 to-purple-600
-            text-white font-bold rounded-xl shadow-lg shadow-indigo-500/30
+          className="px-8 py-3 bg-[#00b51d] hover:bg-[#009a18]
+            text-white font-bold rounded-xl shadow-lg shadow-green-500/30
             transition-all duration-200"
         >
           再来一局
