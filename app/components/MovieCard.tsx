@@ -45,7 +45,7 @@ export function MovieCard({
     >
       {/* 卡片主体 */}
       <div
-        className={`relative w-full max-w-[160px] md:max-w-[240px] rounded-2xl overflow-hidden
+        className={`relative w-full max-w-[180px] md:max-w-[280px] rounded-2xl overflow-hidden
           shadow-xl shadow-black/20 transition-all duration-200
           ${!disabled ? "hover:shadow-[#00b51d]/30 hover:scale-[1.03] active:scale-[0.97]" : ""}`}
       >

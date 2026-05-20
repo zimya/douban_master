@@ -120,7 +120,7 @@ export function GameBoard({ data }: GameBoardProps) {
         {/* 卡片区域 */}
         <div className="flex flex-row items-center justify-center gap-4 md:gap-10 w-full">
           {/* 左侧卡片 */}
-          <div className="flex-1 flex items-center justify-center max-w-[200px] md:max-w-[280px]">
+          <div className="flex-1 flex items-center justify-center max-w-[220px] md:max-w-[320px]">
             <MovieCard
               movie={gameState.leftMovie}
               revealed={isRevealed}
@@ -139,7 +139,7 @@ export function GameBoard({ data }: GameBoardProps) {
           </div>
 
           {/* 右侧卡片：评分永远未知（等待揭示） */}
-          <div className="flex-1 flex items-center justify-center max-w-[200px] md:max-w-[280px]">
+          <div className="flex-1 flex items-center justify-center max-w-[220px] md:max-w-[320px]">
             <MovieCard
               movie={gameState.rightMovie}
               revealed={isRevealed}
