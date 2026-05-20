@@ -72,8 +72,17 @@ export const PHASE_COMPLETION_MESSAGES: Record<GamePhase, string> = {
   master: "👑 你已经是真正的豆瓣大师！没有什么影视作品能难倒你。",
 };
 
-/** 游戏结束（血量耗尽）时的消息 */
-export const GAME_OVER_MESSAGE = "💔 游戏结束！不过没关系，每一次尝试都是对电影的热爱。";
+/** 游戏结束（血量耗尽）时各阶段的结算语 */
+export const GAME_OVER_MESSAGES: Record<GamePhase, string> = {
+  novice:
+    "运气有些背哟！不过没关系，每一次尝试都是对电影的热爱。",
+  apprentice:
+    "你是一个不折不扣的影迷，豆瓣top250想必你已烂熟于心，看到片名就知道分数。但是冷门片还要加强哦！",
+  expert:
+    "你一生不仅阅片无数，还是研究豆瓣评分的专家。你距离大师已经不远了，再接再厉！",
+  master:
+    "太强了！你简直是人行自走影视库，当之无愧的豆瓣大师，《731》开分前都得问问你！",
+};
 
 /** 抽题最大重试次数（防止死循环） */
 export const MAX_DRAW_ATTEMPTS = 100;

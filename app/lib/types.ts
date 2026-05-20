@@ -53,6 +53,8 @@ export interface GameState {
   totalAnswered: number;
   /** 当前连击数（连续答对次数） */
   streak: number;
+  /** 最高连击数 */
+  maxStreak: number;
   /** 剩余血量 */
   lives: number;
   /** 左侧条目 */
@@ -69,4 +71,8 @@ export interface GameState {
   isVictory: boolean;
   /** 当前回合的答题结果（用于动画） */
   roundResult: "correct" | "wrong" | null;
+  /** 游戏开始时间戳 */
+  startTime: number;
+  /** 游戏结束时间戳 */
+  endTime: number | null;
 }

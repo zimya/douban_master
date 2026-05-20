@@ -1,6 +1,9 @@
 name = "douban-master"
 compatibility_date = "2024-09-23"
+pages_build_output_dir = "out"
 
-# Cloudflare Pages 部署配置
-# 静态资源在 out/ 目录，Pages Functions 在 functions/ 目录
-# 部署命令: wrangler pages deploy out
+# D1 数据库绑定
+[[d1_databases]]
+binding = "DB"
+database_name = "douban_movie"
+database_id = "daf226db-f777-4a82-94d9-9d8d1c4805b1"

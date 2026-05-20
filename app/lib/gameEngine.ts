@@ -65,6 +65,7 @@ export function createInitialState(): GameState {
     questionIndex: 0,
     totalAnswered: 0,
     streak: 0,
+    maxStreak: 0,
     lives: INITIAL_LIVES,
     leftMovie: null,
     rightMovie: null,
@@ -73,6 +74,8 @@ export function createInitialState(): GameState {
     isGameOver: false,
     isVictory: false,
     roundResult: null,
+    startTime: Date.now(),
+    endTime: null,
   };
 }
 
@@ -149,6 +152,7 @@ export function judgeGuess(
   const newTotalAnswered = state.totalAnswered + 1;
   const newQuestionIndex = state.questionIndex + 1;
   const newStreak = isCorrect ? state.streak + 1 : 0;
+  const newMaxStreak = Math.max(state.maxStreak, newStreak);
 
   // 血量耗尽 → 游戏结束
   if (newLives <= 0) {
@@ -158,8 +162,10 @@ export function judgeGuess(
       totalAnswered: newTotalAnswered,
       questionIndex: newQuestionIndex,
       streak: 0,
+      maxStreak: Math.max(state.maxStreak, state.streak), // 答错时连击归零，用之前的streak
       isGameOver: true,
       roundResult: "wrong",
+      endTime: Date.now(),
     };
   }
 
@@ -169,6 +175,7 @@ export function judgeGuess(
     totalAnswered: newTotalAnswered,
     questionIndex: newQuestionIndex,
     streak: newStreak,
+    maxStreak: newMaxStreak,
     roundResult: isCorrect ? "correct" : "wrong",
   };
 }
@@ -201,6 +208,7 @@ export function advanceToNext(
         ...state,
         isVictory: true,
         roundResult: null,
+        endTime: Date.now(),
       };
     }
 

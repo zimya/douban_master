@@ -22,7 +22,7 @@ interface GameBoardProps {
  * 用户点击他认为评分更高的卡片来进行游戏
  */
 export function GameBoard({ data }: GameBoardProps) {
-  const { gameState, handleGuess, restart } = useGame(data);
+  const { gameState, pendingGameOver, handleGuess, restart } = useGame(data);
 
   /** 是否显示阶段过渡动画 */
   const [showPhaseTransition, setShowPhaseTransition] = useState(true);
@@ -71,8 +71,8 @@ export function GameBoard({ data }: GameBoardProps) {
     restart();
   };
 
-  // 游戏结束或通关
-  if (gameState.isGameOver || gameState.isVictory) {
+  // 游戏结束或通关（等待停顿结束后再显示结算界面）
+  if ((gameState.isGameOver || gameState.isVictory) && !pendingGameOver) {
     return <GameOver gameState={gameState} onRestart={handleRestart} />;
   }
 

@@ -23,6 +23,9 @@ const REVEAL_DELAY = 1500;
 export function useGame(data: BucketedMovies | null) {
   const [gameState, setGameState] = useState<GameState>(createInitialState());
 
+  /** 是否处于游戏结束前的停顿阶段（让用户看清最后一题结果） */
+  const [pendingGameOver, setPendingGameOver] = useState(false);
+
   /** 防止组件卸载后 setTimeout 回调执行 */
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -55,8 +58,14 @@ export function useGame(data: BucketedMovies | null) {
       const judged = judgeGuess(gameState, pickedSide);
       setGameState(judged);
 
-      // 如果游戏结束，不需要切换
-      if (judged.isGameOver || judged.isVictory) return;
+      // 如果游戏结束，延迟同样时间后再显示结算界面
+      if (judged.isGameOver || judged.isVictory) {
+        setPendingGameOver(true);
+        timerRef.current = setTimeout(() => {
+          setPendingGameOver(false);
+        }, REVEAL_DELAY);
+        return;
+      }
 
       // 第二步：延迟后执行卡片切换
       timerRef.current = setTimeout(() => {
@@ -75,6 +84,7 @@ export function useGame(data: BucketedMovies | null) {
   const restart = useCallback(() => {
     if (!data) return;
     if (timerRef.current) clearTimeout(timerRef.current);
+    setPendingGameOver(false);
     const initial = createInitialState();
     const initialized = initializeGame(initial, data);
     setGameState(initialized);
@@ -82,6 +92,7 @@ export function useGame(data: BucketedMovies | null) {
 
   return {
     gameState,
+    pendingGameOver,
     handleGuess,
     restart,
   };
