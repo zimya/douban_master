@@ -112,40 +112,43 @@ export function GameBoard({ data }: GameBoardProps) {
         </p>
       </div>
 
-      {/* 状态栏：连击、已答、血量 */}
-      <GameStats gameState={gameState} />
+      {/* 卡片 + 状态栏区域 */}
+      <div className="flex-1 flex flex-col items-center justify-center px-4 py-1 md:py-2">
+        {/* 状态栏：连击、已答、血量 */}
+        <GameStats gameState={gameState} />
 
-      {/* 卡片区域 */}
-      <div className="flex-1 flex flex-row items-center justify-center gap-4 md:gap-10 px-4 py-1 md:py-2">
-        {/* 左侧卡片 */}
-        <div className="flex-1 flex items-center justify-center max-w-[200px] md:max-w-[280px]">
-          <MovieCard
-            movie={gameState.leftMovie}
-            revealed={isRevealed}
-            ratingKnown={leftRatingKnown}
-            side="left"
-            onClick={() => handleGuess("left")}
-            disabled={isRevealed}
-          />
-        </div>
+        {/* 卡片区域 */}
+        <div className="flex flex-row items-center justify-center gap-4 md:gap-10 w-full">
+          {/* 左侧卡片 */}
+          <div className="flex-1 flex items-center justify-center max-w-[200px] md:max-w-[280px]">
+            <MovieCard
+              movie={gameState.leftMovie}
+              revealed={isRevealed}
+              ratingKnown={leftRatingKnown}
+              side="left"
+              onClick={() => handleGuess("left")}
+              disabled={isRevealed}
+            />
+          </div>
 
-        {/* VS 分隔 */}
-        <div className="flex-shrink-0 flex items-center justify-center">
-          <span className="text-gray-400 font-bold text-lg md:text-2xl">
-            VS
-          </span>
-        </div>
+          {/* VS 分隔 */}
+          <div className="flex-shrink-0 flex items-center justify-center">
+            <span className="text-gray-400 font-bold text-lg md:text-2xl">
+              VS
+            </span>
+          </div>
 
-        {/* 右侧卡片：评分永远未知（等待揭示） */}
-        <div className="flex-1 flex items-center justify-center max-w-[200px] md:max-w-[280px]">
-          <MovieCard
-            movie={gameState.rightMovie}
-            revealed={isRevealed}
-            ratingKnown={false}
-            side="right"
-            onClick={() => handleGuess("right")}
-            disabled={isRevealed}
-          />
+          {/* 右侧卡片：评分永远未知（等待揭示） */}
+          <div className="flex-1 flex items-center justify-center max-w-[200px] md:max-w-[280px]">
+            <MovieCard
+              movie={gameState.rightMovie}
+              revealed={isRevealed}
+              ratingKnown={false}
+              side="right"
+              onClick={() => handleGuess("right")}
+              disabled={isRevealed}
+            />
+          </div>
         </div>
       </div>
 
@@ -182,7 +185,7 @@ function ProgressBar({
   const progress = Math.min((baseProgress + phaseProgress) * 100, 100);
 
   return (
-    <div className="w-full px-4 pb-3 md:pb-4">
+    <div className="w-full px-4 pb-12 md:pb-14">
       <div className="w-full h-1.5 md:h-2 bg-gray-200 rounded-full overflow-hidden">
         <div
           className="h-full bg-gradient-to-r from-[#00b51d] to-[#00d422] rounded-full transition-all duration-500 ease-out"

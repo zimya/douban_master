@@ -62,7 +62,9 @@ export function GameOver({ gameState, onRestart }: GameOverProps) {
   const config = PHASE_CONFIGS[gameState.phase];
   const [stats, setStats] = useState<StatsData | null>(null);
   const [personalBest, setPersonalBest] = useState<PersonalBest | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
   const hasSaved = useRef(false);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   const message = isVictory
     ? PHASE_COMPLETION_MESSAGES.master
@@ -131,6 +133,42 @@ export function GameOver({ gameState, onRestart }: GameOverProps) {
     saveAndFetch();
   }, [gameState.totalAnswered, gameState.maxStreak, duration]);
 
+  // 保存结果为图片
+  const handleSaveImage = useCallback(async () => {
+    if (!contentRef.current || isSaving) return;
+    setIsSaving(true);
+    try {
+      // 显示快照专属标题和脚注
+      const titleEl = contentRef.current.querySelector(".snapshot-title");
+      const footnoteEl = contentRef.current.querySelector(".snapshot-footnote");
+      if (titleEl) titleEl.classList.remove("hidden");
+      if (footnoteEl) footnoteEl.classList.remove("hidden");
+
+      const { snapdom } = await import("@zumer/snapdom");
+      const result = await snapdom(contentRef.current, {
+        scale: 2,
+        backgroundColor: "#ffffff",
+      });
+      await result.download({
+        filename: `豆瓣大师_${config.name}_${gameState.totalAnswered}题`,
+        type: "png",
+      });
+
+      // 恢复隐藏
+      if (titleEl) titleEl.classList.add("hidden");
+      if (footnoteEl) footnoteEl.classList.add("hidden");
+    } catch (err) {
+      console.error("保存图片失败:", err);
+      // 确保异常时也恢复隐藏
+      const titleEl = contentRef.current?.querySelector(".snapshot-title");
+      const footnoteEl = contentRef.current?.querySelector(".snapshot-footnote");
+      if (titleEl) titleEl.classList.add("hidden");
+      if (footnoteEl) footnoteEl.classList.add("hidden");
+    } finally {
+      setIsSaving(false);
+    }
+  }, [isSaving, config.name, gameState.totalAnswered]);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -143,6 +181,11 @@ export function GameOver({ gameState, onRestart }: GameOverProps) {
         transition={{ type: "spring", stiffness: 200, damping: 20 }}
         className="text-center px-6 py-8 max-w-md w-full"
       >
+        {/* 快照区域（不包含按钮） */}
+        <div ref={contentRef} className="p-6">
+        {/* 快照标题（仅截图时可见） */}
+        <div className="text-lg font-bold text-[#00b51d] mb-4 hidden snapshot-title">目标是豆瓣大师</div>
+
         {/* 图标 */}
         <motion.div
           initial={{ scale: 0, rotate: -180 }}
@@ -221,17 +264,36 @@ export function GameOver({ gameState, onRestart }: GameOverProps) {
           </motion.div>
         )}
 
-        {/* 重新开始按钮 */}
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={onRestart}
-          className="px-8 py-3 bg-[#00b51d] hover:bg-[#009a18]
-            text-white font-bold rounded-xl shadow-lg shadow-green-500/30
-            transition-all duration-200"
-        >
-          再来一局
-        </motion.button>
+        {/* 快照脚注（仅截图时可见） */}
+        <div className="text-[10px] text-gray-400 mt-4 hidden snapshot-footnote">
+          数据来源：Douban · 数据截止至：2024年9月
+        </div>
+        </div>
+
+        {/* 按钮组 */}
+        <div className="flex justify-center gap-3 mt-6">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={onRestart}
+            className="px-8 py-3 bg-[#00b51d] hover:bg-[#009a18]
+              text-white font-bold rounded-xl shadow-lg shadow-green-500/30
+              transition-all duration-200"
+          >
+            再来一局
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={handleSaveImage}
+            disabled={isSaving}
+            className="px-8 py-3 bg-gray-100 hover:bg-gray-200
+              text-gray-700 font-bold rounded-xl
+              transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isSaving ? "保存中..." : "保存结果"}
+          </motion.button>
+        </div>
       </motion.div>
     </motion.div>
   );

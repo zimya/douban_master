@@ -14,8 +14,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh-CN">
-      <body className="bg-white text-gray-800 antialiased overflow-hidden">
+      <body className="bg-white text-gray-800 antialiased overflow-hidden pb-10">
         {children}
+        <footer className="fixed bottom-0 inset-x-0 z-40 py-3 text-center text-[11px] text-gray-400 bg-white">
+          数据来源：<a href="https://movie.douban.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-600">Douban</a> · 灵感来源：<a href="https://bangumi-master.logicry.cc/" target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-600">Bangumi Master</a> · 数据截止至：2024年9月
+        </footer>
       </body>
     </html>
   );

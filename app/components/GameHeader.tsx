@@ -45,7 +45,7 @@ export function GameHeader({ gameState }: GameHeaderProps) {
  */
 export function GameStats({ gameState }: GameHeaderProps) {
   return (
-    <div className="flex items-center justify-center gap-3 md:gap-4 py-1">
+    <div className="flex items-center justify-center gap-3 md:gap-4 py-1 mb-4 md:mb-6">
       {/* 连击 */}
       {gameState.streak > 0 && (
         <motion.span
