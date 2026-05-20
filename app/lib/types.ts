@@ -57,6 +57,8 @@ export interface GameState {
   leftMovie: Movie | null;
   /** 右侧条目 */
   rightMovie: Movie | null;
+  /** 预加载的下一个条目（当前轮显示时已在后台加载图片） */
+  nextMovie: Movie | null;
   /** 已抽取过的条目 ID 集合（防止重复） */
   usedIds: Set<number>;
   /** 游戏是否结束 */

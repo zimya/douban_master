@@ -67,6 +67,7 @@ export function createInitialState(): GameState {
     lives: INITIAL_LIVES,
     leftMovie: null,
     rightMovie: null,
+    nextMovie: null,
     usedIds: new Set(),
     isGameOver: false,
     isVictory: false,
@@ -75,7 +76,7 @@ export function createInitialState(): GameState {
 }
 
 /**
- * 初始化游戏：抽取前两个电影
+ * 初始化游戏：抽取前两个电影，并预抽取第三个
  */
 export function initializeGame(
   state: GameState,
@@ -91,10 +92,17 @@ export function initializeGame(
   if (!second) return state;
   newUsedIds.add(second.id);
 
+  // 预抽取第三个电影（下一轮的右侧卡片）
+  const third = drawMovie(data, state.phase, second, newUsedIds);
+  if (third) {
+    newUsedIds.add(third.id);
+  }
+
   return {
     ...state,
     leftMovie: first,
     rightMovie: second,
+    nextMovie: third,
     usedIds: newUsedIds,
   };
 }
@@ -165,7 +173,8 @@ export function judgeGuess(
  * 第二步：切换卡片
  *
  * 在揭示评分动画结束后调用。
- * 将当前右边移到左边，从对应桶中抽取新的右边，清除 roundResult。
+ * 将当前右边移到左边，使用预加载的 nextMovie 作为新右边，
+ * 然后预抽取下一轮的 nextMovie。
  */
 export function advanceToNext(
   state: GameState,
@@ -194,10 +203,19 @@ export function advanceToNext(
     // 进入下一阶段：当前右边移到左边，从新阶段的桶中抽取新右边
     const newUsedIds = new Set(state.usedIds);
     const newLeft = state.rightMovie;
+    // 阶段切换时不使用 nextMovie（因为它是从旧阶段桶中抽的），重新从新阶段抽取
     const newRight = drawMovie(data, nextPhase, newLeft, newUsedIds);
 
     if (newRight) {
       newUsedIds.add(newRight.id);
+    }
+
+    // 预抽取下一轮
+    const newNext = newRight
+      ? drawMovie(data, nextPhase, newRight, newUsedIds)
+      : null;
+    if (newNext) {
+      newUsedIds.add(newNext.id);
     }
 
     return {
@@ -206,24 +224,30 @@ export function advanceToNext(
       questionIndex: 0,
       leftMovie: newLeft,
       rightMovie: newRight,
+      nextMovie: newNext,
       usedIds: newUsedIds,
       roundResult: null,
     };
   }
 
-  // 正常流转：当前右边移到左边，抽取新的右边
+  // 正常流转：当前右边移到左边，使用预加载的 nextMovie 作为新右边
   const newUsedIds = new Set(state.usedIds);
   const newLeft = state.rightMovie;
-  const newRight = drawMovie(data, state.phase, newLeft, newUsedIds);
+  const newRight = state.nextMovie; // 使用预加载的电影
 
-  if (newRight) {
-    newUsedIds.add(newRight.id);
+  // 预抽取下一轮的电影
+  const newNext = newRight
+    ? drawMovie(data, state.phase, newRight, newUsedIds)
+    : drawMovie(data, state.phase, newLeft, newUsedIds);
+  if (newNext) {
+    newUsedIds.add(newNext.id);
   }
 
   return {
     ...state,
     leftMovie: newLeft,
     rightMovie: newRight,
+    nextMovie: newNext,
     usedIds: newUsedIds,
     roundResult: null,
   };

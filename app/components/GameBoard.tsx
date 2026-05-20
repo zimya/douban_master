@@ -11,6 +11,7 @@ import { MovieCard } from "./MovieCard";
 import { RoundFeedback } from "./RoundFeedback";
 import { PhaseTransition } from "./PhaseTransition";
 import { GameOver } from "./GameOver";
+import { getProxiedImageUrl } from "../lib/imageProxy";
 
 interface GameBoardProps {
   data: BucketedMovies;
@@ -55,6 +56,14 @@ export function GameBoard({ data }: GameBoardProps) {
       prevTotalRef.current = gameState.totalAnswered;
     }
   }, [gameState.roundResult, gameState.totalAnswered]);
+
+  // 预加载下一轮的电影封面图片
+  useEffect(() => {
+    if (gameState.nextMovie) {
+      const img = new Image();
+      img.src = getProxiedImageUrl(gameState.nextMovie.cover_url);
+    }
+  }, [gameState.nextMovie]);
 
   // 重新开始时重置
   const handleRestart = () => {
