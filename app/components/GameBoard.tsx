@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { AnimatePresence } from "framer-motion";
 import { BucketedMovies } from "../lib/dataLoader";
 import { useGame } from "../hooks/useGame";
@@ -12,6 +12,7 @@ import { RoundFeedback } from "./RoundFeedback";
 import { PhaseTransition } from "./PhaseTransition";
 import { GameOver } from "./GameOver";
 import { getProxiedImageUrl } from "../lib/imageProxy";
+import { SOUND_PRESETS } from "../lib/sound";
 
 interface GameBoardProps {
   data: BucketedMovies;
@@ -23,6 +24,14 @@ interface GameBoardProps {
  */
 export function GameBoard({ data }: GameBoardProps) {
   const { gameState, pendingGameOver, handleGuess, restart } = useGame(data);
+
+  /** 声音开关状态，默认开启 */
+  const [soundEnabled, setSoundEnabled] = useState(true);
+
+  /** 切换声音开关 */
+  const toggleSound = useCallback(() => {
+    setSoundEnabled((prev) => !prev);
+  }, []);
 
   /** 是否显示阶段过渡动画 */
   const [showPhaseTransition, setShowPhaseTransition] = useState(true);
@@ -56,6 +65,16 @@ export function GameBoard({ data }: GameBoardProps) {
       prevTotalRef.current = gameState.totalAnswered;
     }
   }, [gameState.roundResult, gameState.totalAnswered]);
+
+  // 播放答题音效
+  useEffect(() => {
+    if (!soundEnabled) return;
+    if (gameState.roundResult === "correct") {
+      SOUND_PRESETS.correct();
+    } else if (gameState.roundResult === "wrong") {
+      SOUND_PRESETS.wrong();
+    }
+  }, [gameState.roundResult, soundEnabled]);
 
   // 预加载下一轮的电影封面图片
   useEffect(() => {
@@ -100,7 +119,11 @@ export function GameBoard({ data }: GameBoardProps) {
       <RoundFeedback result={gameState.roundResult} />
 
       {/* 顶部信息栏 */}
-      <GameHeader gameState={gameState} />
+      <GameHeader
+        gameState={gameState}
+        soundEnabled={soundEnabled}
+        onToggleSound={toggleSound}
+      />
 
       {/* 提示语 */}
       <div className="text-center pt-1 pb-0.5 md:pt-2 md:pb-1">
