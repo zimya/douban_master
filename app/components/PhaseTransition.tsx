@@ -20,7 +20,8 @@ export function PhaseTransition({ phase, onContinue }: PhaseTransitionProps) {
   const phaseIcons: Record<GamePhase, string> = {
     novice: "🌱",
     apprentice: "📖",
-    expert: "⭐",
+    veteran: "👓",
+    expert: "🎓",
     master: "👑",
   };
 

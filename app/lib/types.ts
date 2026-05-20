@@ -23,7 +23,7 @@ export type Bucket = "A" | "B" | "C" | "D";
 /**
  * 游戏阶段
  */
-export type GamePhase = "novice" | "apprentice" | "expert" | "master";
+export type GamePhase = "novice" | "apprentice" | "veteran" | "expert" | "master";
 
 /**
  * 游戏阶段配置
