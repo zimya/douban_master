@@ -1,0 +1,6 @@
+name = "douban-master"
+compatibility_date = "2024-09-23"
+
+# Cloudflare Pages 部署配置
+# 静态资源在 out/ 目录，Pages Functions 在 functions/ 目录
+# 部署命令: wrangler pages deploy out
