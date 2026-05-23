@@ -312,7 +312,7 @@ function StatItem({ label, value }: { label: string; value: string }) {
  * 柱状统计图组件
  * 显示所有玩家的总答题数分布，高亮当前用户位置
  * 数据格式: [{count: 5, total_answered: 12}, ...] 表示答了5题的有12次
- * >=50 截尾在本地完成
+ * >=60 截尾在本地完成
  */
 function Histogram({
   distribution,
@@ -321,7 +321,7 @@ function Histogram({
   distribution: DistributionRow[];
   currentValue: number;
 }) {
-  const TAIL_THRESHOLD = 50;
+  const TAIL_THRESHOLD = 60;
 
   // 判断是否需要截尾
   const hasOverThreshold = distribution.some((r) => r.count > TAIL_THRESHOLD);
